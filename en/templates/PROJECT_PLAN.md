@@ -1,58 +1,39 @@
 # PROJECT_PLAN
 
-## 1. Planning Basis
+## 1. Execution Mode and Key Rationale
 
-## 2. Project Complexity Judgment
+Mode: Solo | Lean | Team
 
-### 2.1 Six-Dimension Base Score
+Key reasons:
+- 
 
-Scoring notes:
-- Score "long-term evolution" only when the user explicitly confirms ongoing iteration or the project explicitly requires historical compatibility, version migration, or long-term maintenance.
-- Do not add points merely because "any software could continue to evolve."
-- When several dimensions are only different expressions of the same root cause, explain the relationship and avoid mechanical double counting.
+Necessary roles:
+- 
 
-### 2.2 Independent Professional Judgment Needs
+## 2. Overall Technical Direction
 
-### 2.3 Forced Upgrade Conditions
+## 3. System Structure and Core Modules
 
-### 2.4 Final Judgment Rationale
+## 4. Data and High-Risk Boundaries
 
-### 2.5 Confidence
+## 5. Stage Roadmap
 
-High / Medium / Low
+For each stage, write only:
+- Goal
+- Shortest necessary acceptance criteria
 
-When confidence is Low, ask only 1 question: the one that most affects Solo / Lean / Team routing.
+## 6. Current Execution Stage
 
-## 3. Recommended Execution Mode
+### 6.1 Goal
 
-## 4. Overall Technical Direction
+### 6.2 Allowed Scope
 
-## 5. System Structure
+### 6.3 Explicit Non-Goals
 
-## 6. Core Modules
+### 6.4 Acceptance Criteria
 
-## 7. Data Boundaries
+## 7. Explicitly Deferred Capabilities
 
-## 8. Security and Cost Boundaries
+## 8. Known Risks or Open Technical Decisions
 
-## 9. Necessary AI Roles
-
-## 10. Stage Roadmap
-
-## 11. Acceptance Criteria by Stage
-
-## 12. Conditions for Enabling High-Risk Capabilities
-
-## 13. Explicitly Deferred Capabilities
-
-## 14. First Execution Stage
-
-### 14.1 Goal
-
-### 14.2 Allowed Scope
-
-### 14.3 Explicit Non-Goals
-
-### 14.4 Acceptance Criteria
-
-## 15. Known Technical Risks
+Keep only `[Pending confirmation]` or `[Unverified]` items that can change future execution.
