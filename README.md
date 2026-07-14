@@ -14,6 +14,38 @@ It turns one rough idea into three separate, formal Markdown files:
 
 ---
 
+## A key change in v1.8
+
+**Conversation explains and confirms; Markdown stores memory and execution.**
+
+Formal files no longer persist full score breakdowns, why other modes were rejected, confidence explanations, long alternative comparisons, or ordinary unconfirmed suggestions by default.
+
+Before content enters formal Markdown, ask one question:
+
+> Would a future AI be more likely to make a wrong execution decision if it did not know this?
+
+Only content with a real execution consequence belongs in formal project memory.
+
+---
+
+## v1.8: Read Existing Facts First and Ask Only Blocking Questions
+
+v1.8 keeps the same three-file output while improving the startup judgment layer:
+
+- Do not ask again when an answer already exists in conversation, files, or project documents.
+- When a project already exists, read current facts first instead of restarting from blank questions.
+- Classify unknowns as blocking, non-blocking, or irrelevant; only blocking questions interrupt by default.
+- AI owns technical route, architecture, security, data-boundary, and test-sufficiency judgment instead of pushing technical correctness onto a non-technical user.
+- Use only three evidence states: `Confirmed`, `Pending confirmation`, and `Unverified`.
+- Add a final three-file gate for duplication, evidence state, empty sections, context rules, and current-stage acceptance.
+- Final handoff stays in conversation and does not become a fourth formal source file.
+
+The core promise remains unchanged:
+
+> **One idea. One conversation. Three formal files. Then the Skill exits.**
+
+---
+
 ## Why this exists
 
 AI coding often fails before the code is the real problem.
@@ -191,15 +223,12 @@ It is a lightweight planning and governance layer designed to make AI-assisted s
 
 ## Validation status
 
-Version 1.6 has passed the current rule-level and structural stress suite:
+The current release, **v1.8.2**, has passed the latest current-model scenario and structural validation:
 
-- 69 / 69 static and consistency checks
-- 96 / 96 rule-level stress scenarios
-- all 729 combinations of the six-dimension base complexity score
-- 5,000 random complexity mutations
-- 0 threshold errors
-- 0 monotonicity errors
-- 0 random mutation errors
+- 78 / 78 full-project output checks across six representative project scenarios
+- 10 / 10 static core-rule checks
+- 10 / 10 interaction and adversarial scenarios
+- earlier rule-level stress coverage also included all 729 six-dimension score combinations and 5,000 random complexity mutations
 
 Important: these results are **not** cross-model live-session results. Real behavior may still vary across models and products.
 
@@ -222,7 +251,7 @@ Important: these results are **not** cross-model live-session results. Real beha
 
 ## Version
 
-Current release: **v1.6**
+Current release: **v1.8.2**
 
 ---
 
