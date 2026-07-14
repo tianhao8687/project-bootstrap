@@ -26,6 +26,7 @@ Before content enters formal Markdown, ask one question:
 
 Only content with a real execution consequence belongs in formal project memory.
 
+
 ---
 
 ## v1.8: Read Existing Facts First and Ask Only Blocking Questions
