@@ -3,56 +3,52 @@
 Version: 1.0
 Execution Mode: Solo | Lean | Team
 
-Generated From:
-- PROJECT_BRIEF
-- PROJECT_PLAN
+## 1. Execution Mode and Highest Principles
 
-## 1. Project Execution Mode
+Keep only project-specific principles actually needed.
 
-Include: Solo / Lean / Team, judgment rationale, necessary roles, and roles that are not needed.
+## 2. Permanently Non-Trimmable Core Rules
 
-## 2. Highest Project Principles
+These rules must remain complete:
 
-## 3. Formal Fact Priority
+1. Do not reread all three files by default for every task.
+2. Load only the minimum context required for the current task.
+3. `PROJECT_BRIEF.md`: read only when WHAT / WHY / product boundaries are needed.
+4. `PROJECT_PLAN.md`: read only when HOW / stage / technical direction are needed.
+5. Without new evidence, do not perform a full analysis again for an issue that already passed.
+6. A test that was not actually run must never be reported as passed.
+7. Do not present `[Pending confirmation]` or `[Unverified]` information as `[Confirmed]`.
+8. Extra issues may be recorded, but must not silently expand the current task scope.
 
-## 4. Currently Necessary Roles
+## 3. AI Action Authorization
 
-## 5. Role Responsibilities and Prohibitions
+Define for the actual project:
 
-## 6. Context Loading Rules
+- Level 1: low-impact items AI may decide autonomously
+- Level 2: items AI may suggest but must not execute silently
+- Level 3: items requiring explicit approval first
 
-## 7. Scope Control Rules
+## 4. Necessary Roles and Problem Ownership
 
-## 8. No Duplicate Analysis Rules
+Keep only for Lean / Team or when genuinely needed.
 
-## 9. Conditions for Reopening Issues
+## 5. Specialist Boundary Rules
 
-## 10. AI Freedom and Action Authorization
+Keep only actually applicable rules for database, Migration, AI, Provider, security, cost, privacy, or compliance.
 
-## 11. Development Execution Rules
+## 6. Testing and Completion Reports
 
-## 12. Database / AI / Provider / Security / Cost Rules
+Add only project-specific testing and reporting rules not already covered in section 2.
 
-## 13. Testing and Acceptance Rules
+## 7. Project-Specific Hard Constraints
 
-## 14. Completion Report Rules
+Keep only project-specific constraints whose omission could cause future AI to make a wrong decision.
 
-## 15. Token Efficiency Rules
+## 8. Conditions for Changing Rules
 
-The following must never be omitted in any execution mode:
+State which rules may be adjusted locally and which changes require explicit approval first.
 
-- Minimum context-loading rules
-- Three-file on-demand reading rules
-- Never reread all three files by default for every task
-
-The three formal source files must remain separate:
-
-- `PROJECT_BRIEF.md`: read only when WHAT / WHY / product boundaries are needed.
-- `PROJECT_PLAN.md`: read only when HOW / stage / technical direction are needed.
-- `AI_PROJECT_RULES.md`: use as the rules governing later AI execution.
-
-Do not reread all three files by default for every task. Load only the minimum context required to complete the current task.
-
-## 16. Project-Specific Hard Constraints
-
-## 17. Conditions for Changing Rules
+Notes:
+- Template sections are not mandatory checklists.
+- Except for section 2, trim other sections based on actual project needs.
+- Section 2 is permanently non-trimmable.
