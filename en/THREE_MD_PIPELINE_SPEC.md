@@ -2,109 +2,250 @@
 
 ## Core Positioning
 
-One Skill, one conversation, three formal outputs:
+One Skill, one conversation, three separate formal outputs:
 
-1. PROJECT_BRIEF.md
-2. PROJECT_PLAN.md
-3. AI_PROJECT_RULES.md
+1. `PROJECT_BRIEF.md`
+2. `PROJECT_PLAN.md`
+3. `AI_PROJECT_RULES.md`
+
+## v1.7 Highest Principle
+
+> Conversation explains and confirms; Markdown stores memory and execution.
+
+Before any content enters a formal Markdown file, ask:
+
+> Would a future AI be more likely to make a wrong execution decision if it did not know this?
+
+- Yes: persist it.
+- No, it only helps the current user understand: keep it in conversation.
+- Useful only for a specific risk: write a short conditional rule.
+
+## v1.8 Addition: Evidence-First Intake and Blocking-Question Filter
+
+### Read existing facts first
+
+Before asking, check:
+
+- Current conversation
+- User-provided files
+- Existing project documents
+- Confirmed historical decisions
+
+Do not ask again when the answer already exists.
+
+If the user already has a project, read only the minimum existing facts needed for the current judgment. Do not restart from blank and do not default to a full scan.
+
+### Ask only blocking questions
+
+Classify unknowns as:
+
+- `Blocking`: may change goal, MVP, execution mode, core technical direction, main data path, high-risk boundary, or first execution stage.
+- `Non-blocking`: can be deferred without affecting startup.
+- `Irrelevant`: would not change future AI action.
+
+Only blocking questions interrupt the flow by default.
+
+### Non-technical users do not own technical correctness
+
+AI should own technical route, architecture, security, data-boundary, test-sufficiency, and over-engineering judgment.
+
+The user mainly confirms:
+
+- Real business facts
+- Product goals and preferences
+- Budget
+- Risk tolerance
+- Authorization for high-impact changes
+
+### Three evidence states
+
+Use only:
+
+- `Confirmed`
+- `Pending confirmation`
+- `Unverified`
+
+Do not turn something into a formal fact merely because it seems reasonable.
+
+### Hidden-complexity scan
+
+Before the final complexity judgment, silently check:
+
+- Login and permissions
+- Payments, subscriptions, quotas, refunds
+- Formal database and migrations
+- Third-party API / SDK / OAuth / Webhook
+- Real paid AI provider
+- Sensitive data and privacy
+- File uploads and data ownership
+- Deployment and rollback
+- Clear loss risk
+
+Ask only when an unknown could change the mode, architecture, or a high-risk boundary.
 
 ## Data Flow
 
+```text
 PROJECT_BRIEF
-→ Defines WHAT / WHY
-
+Defines WHAT / WHY
+↓
 PROJECT_PLAN
-→ Inherits BRIEF and adds only HOW
-→ Uses the Project Complexity Router to determine Solo / Lean / Team
-
+Inherits BRIEF and adds HOW only
+↓
 AI_PROJECT_RULES
-→ Inherits BRIEF + PLAN and generates execution rules matched to actual project complexity
+Inherits BRIEF + PLAN and adds execution rules only
+```
 
-## Project Complexity Router
+A downstream stage may fill gaps left undefined upstream but must never silently rewrite confirmed upstream decisions.
 
-Use three layers:
+## Formal Artifact Admission
+
+Persist by default:
+
+- Confirmed goal and scope
+- Hard constraints
+- Explicit non-goals
+- Final technical direction
+- Final execution mode
+- Necessary roles
+- Data and high-risk boundaries
+- Stage roadmap
+- Current stage
+- Acceptance criteria
+- Rules future AI must obey
+
+Keep in conversation by default:
+
+- Educational explanations
+- Full six-dimension scoring process
+- Why other modes were rejected
+- Confidence explanations
+- Long alternative comparisons
+- Temporary progress reports
+- AI reasoning summaries
+- Ordinary unconfirmed suggestions
+
+## Necessary Rationale
+
+Keep only the shortest reason required to prevent a future AI from making a wrong decision or overturning a correct one.
+
+## Complexity Router
+
+Three layers:
 
 1. Six-dimension base complexity
 2. Independent professional judgment needs
 3. Forced upgrade conditions
 
-Then output:
+Final modes:
 
 - Solo: one AI, shortest rules
 - Lean: a few necessary roles
-- Team: full multi-role governance only for genuinely complex projects
+- Team: full governance only for genuinely complex projects
 
-Do not judge from code lines, page count, or feature count alone.
+Detailed scoring stays in conversation by default. `PROJECT_PLAN.md` keeps only final mode, 3–5 key reasons, and necessary roles.
 
-## Highest Inheritance Rule
+## Mandatory Three-File Separation
 
-A later stage may fill in information left undefined by an earlier stage, but must never silently rewrite a confirmed upstream decision.
+The three formal source files must remain separate.
 
-## AI Freedom and Action Authorization
+Reason: later AI should load only the minimum context needed for the current task.
 
-AI may freely discover, analyze, and propose, but action is controlled by impact level:
+```text
+Need WHAT / WHY / product boundaries
+→ PROJECT_BRIEF.md
 
-- Level 1: Low-impact implementation details may be decided autonomously.
-- Level 2: Medium-impact ideas may be suggested, but formal decisions must not be changed silently.
-- Level 3: Changes to formal scope, core architecture, hard constraints, or high-risk boundaries require approval first.
+Need HOW / stage / technical direction
+→ PROJECT_PLAN.md
 
-The goal is not to restrict AI thinking. The goal is to restrict unauthorized AI action.
+Executing real development
+→ Follow AI_PROJECT_RULES.md
+```
+
+Do not reread all three files by default.
+
+## PROJECT_PLAN Deduplication
+
+- Do not persist the full six-dimension score.
+- Do not separately repeat complexity judgment, recommended mode, and necessary roles.
+- Put shortest acceptance criteria directly in the roadmap.
+- Do not repeat product background from BRIEF.
+- Reference upstream files instead of copying them.
+
+## AI_PROJECT_RULES Deduplication
+
+Keep only:
+
+- Trigger
+- Must do
+- Must not do
+- Shortest rationale required to prevent a mistake
+
+Do not write long educational explanations or repeat product background, roadmap content, or complexity scoring.
+
+## Length Budgets
+
+Soft budgets, not hard limits:
+
+| File | Simple | Medium | Complex |
+|---|---:|---:|---:|
+| PROJECT_BRIEF | 400–800 | 700–1400 | 1200–2200 |
+| PROJECT_PLAN | 500–1000 | 1000–2000 | 1800–3500 |
+| AI_PROJECT_RULES | 500–1000 | 900–1800 | 1800–3500 |
+
+When over budget, remove duplication, teaching explanations, process narration, and content that does not change future AI action first.
+
+Never remove hard constraints, risk boundaries, or necessary acceptance criteria merely to hit a number.
+
+## Final Three-File Gate
+
+Before output, verify:
+
+1. BRIEF contains only WHAT / WHY / product boundaries.
+2. PLAN adds HOW without repeating BRIEF.
+3. RULES contains execution rules without repeating PLAN.
+4. Pending or unverified information is not presented as confirmed.
+5. No long explanation remains unless it changes future AI action.
+6. No empty section is filled merely for completeness.
+7. The current stage includes goal, allowed scope, explicit non-goals, and acceptance criteria.
+8. User-visible capabilities use observable or actionable acceptance where possible.
+9. The three files remain separate.
+10. Minimum-context loading rules remain present.
+
+If a check fails, fix only the affected part instead of regenerating everything.
+
+Final handoff stays in conversation and does not become a fourth formal file.
 
 ## Default Confirmation Points
 
 Keep only two:
 
-1. Confirm PROJECT_BRIEF
-2. Confirm PROJECT_PLAN
+1. Confirm `PROJECT_BRIEF`
+2. Confirm `PROJECT_PLAN`
 
-AI_PROJECT_RULES is generated directly by default. Ask again only when a major conflict is found.
+Generate `AI_PROJECT_RULES` directly by default unless a major conflict is found.
 
 ## Local Updates
 
-When the user changes one part, update only affected sections and necessary downstream files. Do not regenerate everything.
+When the user changes one part, update only affected sections and truly affected downstream files. Do not regenerate everything by default.
 
 ## Exit Condition
 
-After all three Markdown files are generated, the Skill ends.
+After the three Markdown files are generated, the Skill ends.
 
-The real development project imports only the three Markdown files and does not keep loading this Skill.
+The real development project imports only the three formal files and does not keep loading this Skill.
 
-## Actual File Output Rules
+## Permanent Core Rule Gate
 
-- If the environment supports file creation, create three real Markdown files.
-- If file creation is unavailable, output three separate Markdown blocks using the exact filenames.
-- Never merge the three formal files into one.
+`AI_PROJECT_RULES.md` must always contain all of these:
 
-## Long-Term Evolution Scoring Limit
+1. Do not reread all three files by default.
+2. Load only the minimum context for the current task.
+3. State when BRIEF should be read.
+4. State when PLAN should be read.
+5. Do not reopen passed issues without new evidence.
+6. Never report unrun tests as passed.
+7. Do not present pending or unverified information as confirmed.
+8. Do not expand current scope merely because extra issues were found.
 
-Do not score long-term evolution merely because "any software could continue to evolve."
-Count it only when the user explicitly confirms continued iteration or the project explicitly requires historical compatibility, version migration, or long-term maintenance.
-
-## Complexity Judgment Confidence
-
-The complexity router must output: High / Medium / Low.
-
-When confidence is Low, ask only 1 question: the one that most affects Solo / Lean / Team routing.
-Once information is sufficient for a reviewable draft, produce the draft instead of continuing to interrogate the user.
-
-## Mandatory Separation of the Three Files
-
-Final output must keep these separate:
-
-- `PROJECT_BRIEF.md`
-- `PROJECT_PLAN.md`
-- `AI_PROJECT_RULES.md`
-
-The three formal source files must remain separate and may not be replaced by one master document.
-
-Reason: later AI should read only the files needed for the current task, avoiding irrelevant token usage from repeatedly loading the entire project context.
-
-## Mandatory in Every Execution Mode
-
-Whether the final mode is Solo, Lean, or Team, the following must never be removed by dynamic trimming:
-
-- Minimum context-loading rules
-- Three-file on-demand reading rules
-- Never reread all three files by default for every task
-
-These are core token-efficiency constraints.
+If any rule is missing, the output gate fails.
