@@ -2,28 +2,20 @@
 
 ## 1. One-Sentence Project Definition
 
-## 2. Why This Project Exists
+## 2. Target Users and Core Problem
 
-## 3. Target Users
+## 3. Core Use Cases
 
-## 4. Core Pain Points
+## 4. Core Inputs and Outputs
 
-## 5. Core Use Cases
+## 5. Must-Have MVP Capabilities
 
-## 6. Core Inputs
+## 6. Explicit Non-Goals
 
-## 7. Core Outputs
+## 7. Success Criteria
 
-## 8. Must-Have MVP Capabilities
+## 8. Confirmed Hard Constraints
 
-## 9. Explicit Non-Goals
+## 9. Current Open Questions
 
-## 10. Success Criteria
-
-## 11. Confirmed Decisions
-
-## 12. AI Suggestions Not Yet Confirmed
-
-## 13. Open Questions
-
-## 14. Real-World Risks
+Keep only `[Pending confirmation]` or `[Unverified]` items that can change future execution.
