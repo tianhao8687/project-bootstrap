@@ -1,0 +1,24 @@
++    lines.append("- 用户主动再次追问“到底难在哪里”：允许再次回答，但仍保持最短充分输出。")
++    lines.append("- 已有项目只做局部修改：不从空白重启，不默认重读全部三个文件。")
++    lines.append("- 用户要求把三个正式 MD 合并或新增第四个长期 MD：不能静默破坏三文件体系，应作为明确规则变更处理。")
++    lines.append("")
++    lines.append("## 失败明细")
++    lines.append("")
++    if failures:
++        lines.extend([f"- {f}" for f in failures])
++    else:
++        lines.append("无。")
++    lines.append("")
++    lines.append("## 限制")
++    lines.append("")
++    lines.append("本次测试验证了规则完整性、输出长度、触发条件、多轮去重和规则抗偏移样例；没有调用多个外部大模型做真实跨模型会话，因此不能据此声称所有模型都会 100% 遵守。")
++    report.write_text("\n".join(lines) + "\n", encoding="utf-8")
++    return report
++
++
++if __name__ == "__main__":
++    failures, result = run()
++    report = write_report(result, failures)
++    print(json.dumps(result["metrics"], ensure_ascii=False, indent=2))
++    print(f"report={report}")
++    raise SystemExit(1 if failures else 0)
