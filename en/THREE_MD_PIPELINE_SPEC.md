@@ -83,6 +83,34 @@ Before the final complexity judgment, silently check:
 
 Ask only when an unknown could change the mode, architecture, or a high-risk boundary.
 
+### User-visible important difficulty reminder
+
+The hidden-complexity scan must not stay entirely internal.
+
+When there are real difficulties the user is likely to underestimate and they could cause rework, higher cost, architectural change, or clear failure risk, show this once in conversation:
+
+```text
+⚠️ This is important. Please read this first.
+```
+
+Then give only 2–4 key difficulties, usually one sentence each. Use plain language. The tone may be slightly sharp or humorous, but allow at most one light analogy or teasing line. Do not turn it into a report, pile on jargon, or force jokes.
+
+Keep it roughly 60–160 English words by default and normally under 220 words even for complex projects.
+
+Multi-turn rules:
+
+- Show the full reminder once per bootstrap by default.
+- Without new evidence, do not repeat the same difficulties.
+- Warn again only when new evidence materially changes complexity, architecture, a high-risk boundary, cost, or MVP scope, and show only what is new or changed.
+- If the user explicitly asks about project difficulties, answer again but still keep it shortest-sufficient.
+
+This reminder belongs only to the conversation display layer:
+
+- Do not create a fourth file.
+- Do not create a dedicated formal Markdown section.
+- If a difficulty changes future AI action, persist it through the normal formal-file admission rules without duplication.
+- The reminder itself does not create an extra confirmation point or pause the flow unless a real blocking question exists.
+
 ## Data Flow
 
 ```text
@@ -234,6 +262,7 @@ When the user changes one part, update only affected sections and truly affected
 After the three Markdown files are generated, the Skill ends.
 
 The real development project imports only the three formal files and does not keep loading this Skill.
+
 
 ## Permanent Core Rule Gate
 
