@@ -1,0 +1,186 @@
++        "rule_attack",
++    ]
++    failures: list[str] = []
++    total_turns = 0
++
++    for seq_id in range(count):
++        warned = False
++        last_material_change_turn = -1
++        seq_len = rng.randint(4, 14)
++        for turn in range(seq_len):
++            event = rng.choice(events)
++            total_turns += 1
++
++            should_warn = False
++            if event == "initial_complex" and not warned:
++                should_warn = True
++                warned = True
++            elif event == "material_change":
++                should_warn = True
++                warned = True
++                last_material_change_turn = turn
++            elif event == "explicit_ask":
++                should_warn = True
++
++            if event in {"ordinary_followup", "confirm", "local_edit", "rule_attack", "initial_simple"} and should_warn:
++                failures.append(f"mutation {seq_id} turn {turn}: non-trigger event warned")
++                break
++
++            if event == "initial_complex" and warned and not should_warn and turn == last_material_change_turn:
++                failures.append(f"mutation {seq_id} turn {turn}: impossible warning state")
++                break
++
++    return total_turns, failures
++
++def run() -> tuple[list[str], dict[str, Any]]:
++    failures: list[str] = []
++    zh_skill = (ROOT / "zh-CN" / "SKILL.md").read_text(encoding="utf-8")
++    zh_spec = (ROOT / "zh-CN" / "THREE_MD_PIPELINE_SPEC.md").read_text(encoding="utf-8")
++
++    required_fragments = [
++        WARNING_CN,
++        "同一轮项目启动中，默认只完整提醒 1 次",
++        "没有新证据，不重新全面提醒",
++        "不新增第四个文件",
++        "不要再额外输出一份完整的“项目复杂度判断”",
++        "复杂项目最多约 320 个中文字符",
++    ]
++    for frag in required_fragments:
++        if frag not in zh_skill and frag not in zh_spec:
++            failures.append(f"STATIC missing rule fragment: {frag}")
++
++    single_results: list[dict[str, Any]] = []
++    for case in SINGLE_CASES:
++        sample = case["sample"]
++        has_warning = WARNING_CN in sample
++        passed = has_warning == case["expect_warning"]
++        reasons: list[str] = []
++        if not passed:
++            reasons.append(f"warning expected={case['expect_warning']} actual={has_warning}")
++
++        if has_warning:
++            if sample.count(WARNING_CN) != 1:
++                passed = False
++                reasons.append("warning marker must appear exactly once")
++            length = compact_len(sample)
++            if length > 320:
++                passed = False
++                reasons.append(f"reminder too long: {length} > 320 compact chars")
++            if any(bad in sample for bad in ["项目复杂度评估报告", "风险评估报告", "PROJECT_CHALLENGES.md", "小怪兽"]):
++                passed = False
++                reasons.append("contains forbidden report/fourth-file/canned-metaphor content")
++        else:
++            length = compact_len(sample)
++
++        single_results.append({
++            "id": case["id"],
++            "name": case["name"],
++            "passed": passed,
++            "compact_chars": length,
++            "warning": has_warning,
++            "reasons": reasons,
++        })
++        if not passed:
++            failures.append(f"{case['id']} {case['name']}: {'; '.join(reasons)}")
++
++    multi_results: list[dict[str, Any]] = []
++    for convo in MULTI_TURN_CASES:
++        warning_turns = [i + 1 for i, turn in enumerate(convo["turns"]) if turn["expect_warning"]]
++        full_warning_count = sum(1 for t in convo["turns"] if t["kind"] == "full_warning")
++        material_change_count = sum(1 for t in convo["turns"] if t["kind"] == "material_change")
++        explicit_ask_count = sum(1 for t in convo["turns"] if t["kind"] == "explicit_ask")
++        allowed_max = 1 + material_change_count + explicit_ask_count
++        passed = full_warning_count <= 1 and len(warning_turns) <= allowed_max
++        reasons: list[str] = []
++        if full_warning_count > 1:
++            reasons.append("full warning repeats without state reset")
++        if len(warning_turns) > allowed_max:
++            reasons.append("too many warning turns")
++        for idx, turn in enumerate(convo["turns"], start=1):
++            if turn["kind"] in {"confirm", "ordinary_followup", "simple", "existing_project", "done", "rule_attack", "insufficient"} and turn["expect_warning"]:
++                passed = False
++                reasons.append(f"turn {idx}: ordinary/non-trigger turn incorrectly expects warning")
++        multi_results.append({
++            "id": convo["id"],
++            "name": convo["name"],
++            "passed": passed,
++            "turns": len(convo["turns"]),
++            "warning_turns": warning_turns,
++            "reasons": reasons,
++        })
++        if not passed:
++            failures.append(f"{convo['id']} {convo['name']}: {'; '.join(reasons)}")
++
++    mutation_turns, mutation_failures = run_random_mutations()
++    failures.extend(mutation_failures)
++
++    metrics = {
++        "static_checks": len(required_fragments),
++        "single_cases": len(SINGLE_CASES),
++        "multi_conversations": len(MULTI_TURN_CASES),
++        "multi_turns": sum(len(c["turns"]) for c in MULTI_TURN_CASES),
++        "random_mutation_sequences": 5000,
++        "random_mutation_turns": mutation_turns,
++        "single_warning_cases": sum(1 for c in SINGLE_CASES if c["expect_warning"]),
++        "single_no_warning_cases": sum(1 for c in SINGLE_CASES if not c["expect_warning"]),
++        "max_triggered_compact_chars": max(r["compact_chars"] for r in single_results if r["warning"]),
++        "avg_triggered_compact_chars": round(sum(r["compact_chars"] for r in single_results if r["warning"]) / sum(1 for r in single_results if r["warning"]), 1),
++        "failures": len(failures),
++    }
++    result = {
++        "metrics": metrics,
++        "single_results": single_results,
++        "multi_results": multi_results,
++    }
++    return failures, result
++
++
++def write_report(result: dict[str, Any], failures: list[str]) -> Path:
++    report = ROOT.parent / "project-bootstrap-v1.8.3-pressure-test.md"
++    m = result["metrics"]
++    lines: list[str] = []
++    lines.append("# Project Bootstrap v1.8.3 压力测试报告")
++    lines.append("")
++    lines.append("## 结论")
++    lines.append("")
++    lines.append(f"- 规则静态检查：{m['static_checks']} 项")
++    lines.append(f"- 单轮场景：{m['single_cases']} 个")
++    lines.append(f"- 多轮对话：{m['multi_conversations']} 组，共 {m['multi_turns']} 轮")
++    lines.append(f"- 随机多轮状态变异：{m['random_mutation_sequences']} 组，共 {m['random_mutation_turns']} 轮")
++    lines.append(f"- 触发提醒场景：{m['single_warning_cases']} 个；不触发场景：{m['single_no_warning_cases']} 个")
++    lines.append(f"- 触发提醒平均紧凑字符数：{m['avg_triggered_compact_chars']}")
++    lines.append(f"- 触发提醒最大紧凑字符数：{m['max_triggered_compact_chars']} / 320")
++    lines.append(f"- 失败：{m['failures']}")
++    lines.append("")
++    lines.append("> 说明：这是规则级、结构级和样例输出压力测试，不是跨多个外部模型的真实运行基准。不同模型仍可能有执行偏差。")
++    lines.append("")
++    lines.append("## 单轮场景")
++    lines.append("")
++    lines.append("| ID | 场景 | 应提醒 | 紧凑字符 | 结果 |")
++    lines.append("|---|---|---:|---:|---|")
++    case_by_id = {c["id"]: c for c in SINGLE_CASES}
++    for r in result["single_results"]:
++        lines.append(f"| {r['id']} | {r['name']} | {'是' if r['warning'] else '否'} | {r['compact_chars']} | {'PASS' if r['passed'] else 'FAIL'} |")
++    lines.append("")
++    lines.append("## 代表性实际样例")
++    lines.append("")
++    for cid in ["S03", "S04", "S05", "S10", "S13", "S16"]:
++        c = case_by_id[cid]
++        lines.append(f"### {cid} · {c['name']}")
++        lines.append("")
++        lines.append(f"用户输入：`{c['input']}`")
++        lines.append("")
++        lines.append(c["sample"])
++        lines.append("")
++    lines.append("## 多轮对话去重与抗偏移")
++    lines.append("")
++    lines.append("| ID | 对话 | 轮数 | 提醒轮次 | 结果 |")
++    lines.append("|---|---|---:|---|---|")
++    for r in result["multi_results"]:
++        turns = ", ".join(map(str, r["warning_turns"])) or "无"
++        lines.append(f"| {r['id']} | {r['name']} | {r['turns']} | {turns} | {'PASS' if r['passed'] else 'FAIL'} |")
++    lines.append("")
++    lines.append("### 多轮重点结论")
++    lines.append("")
++    lines.append("- 普通确认、局部修改、继续追问：不重复同一批难点。")
++    lines.append("- 新增登录、支付、多人、真实 API Key 等会改变复杂度的新证据：允许再次提醒，但只说新增或变化部分。")
