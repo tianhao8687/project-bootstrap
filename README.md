@@ -47,6 +47,18 @@ The core promise remains unchanged:
 
 ---
 
+## v1.8.3: Tell the user the important difficulties directly
+
+The hidden-complexity scan no longer stays entirely inside the AI.
+
+When a project contains real difficulties the user is likely to underestimate—and those difficulties could cause rework, higher cost, or architectural change—the AI first shows a visible warning:
+
+> ⚠️ **This is important. Please read this first.**
+
+It then explains only 2–4 key difficulties in plain language. The tone may be slightly sharp or humorous, but it does not become a formal report, create a fourth file, or repeat the same warning across later turns without new evidence.
+
+---
+
 ## Why this exists
 
 AI coding often fails before the code is the real problem.
@@ -224,14 +236,28 @@ It is a lightweight planning and governance layer designed to make AI-assisted s
 
 ## Validation status
 
-The current release, **v1.8.2**, has passed the latest current-model scenario and structural validation:
+v1.8 has passed the current rule-level and structural stress suite:
 
-- 78 / 78 full-project output checks across six representative project scenarios
-- 10 / 10 static core-rule checks
-- 10 / 10 interaction and adversarial scenarios
-- earlier rule-level stress coverage also included all 729 six-dimension score combinations and 5,000 random complexity mutations
+- 69 / 69 static and consistency checks
+- 96 / 96 rule-level stress scenarios
+- all 729 combinations of the six-dimension base complexity score
+- 5,000 random complexity mutations
+- 0 threshold errors
+- 0 monotonicity errors
+- 0 random mutation errors
 
 Important: these results are **not** cross-model live-session results. Real behavior may still vary across models and products.
+
+v1.8.3 also adds local rule-level stress tests for the user-visible important-difficulty reminder:
+
+- 6 static rule checks
+- 16 single-turn project scenarios
+- 6 multi-turn conversations, 24 turns total
+- 5,000 randomized multi-turn state mutations, 45,167 turns total
+- Average reminder sample length: 114.5 compact characters; maximum: 128 / 320
+- Current failures: 0
+
+These checks validate rule completeness, output length, trigger conditions, multi-turn deduplication, and resistance to rule drift in sample scenarios. They do not prove that every external model will follow the Skill perfectly.
 
 ---
 
@@ -252,7 +278,7 @@ Important: these results are **not** cross-model live-session results. Real beha
 
 ## Version
 
-Current release: **v1.8.2**
+Current release: **v1.8.3**
 
 ---
 
