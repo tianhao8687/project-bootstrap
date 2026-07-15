@@ -1,0 +1,5 @@
+6. Never report unrun tests as passed.
+7. Do not present pending or unverified information as confirmed.
+8. Do not expand current scope merely because extra issues were found.
+
+If any rule is missing, the output gate fails.
