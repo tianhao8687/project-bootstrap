@@ -263,6 +263,7 @@ After the three Markdown files are generated, the Skill ends.
 
 The real development project imports only the three formal files and does not keep loading this Skill.
 
+
 ## Permanent Core Rule Gate
 
 `AI_PROJECT_RULES.md` must always contain all of these:

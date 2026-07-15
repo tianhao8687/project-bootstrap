@@ -1275,6 +1275,7 @@ In one sentence:
 
 > Conversation explains and confirms; Markdown stores memory and execution. One rough idea becomes three formal files ready for real AI development.
 
+
 ## v1.8.1 Output Compression and Roadmap Control
 
 Before final output:
