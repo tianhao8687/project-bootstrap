@@ -264,7 +264,62 @@ Rules:
 
 - Not mentioned does not automatically mean absent.
 - Ask only when an unknown could change the mode, architecture, or a high-risk boundary.
-- Keep the scan in conversation by default; do not turn it into long formal Markdown.
+- Keep the scan internal by default; do not proactively display the full scan or turn it into long formal Markdown.
+
+## 1.14 User-visible important difficulty reminder
+
+The hidden-complexity scan must not stay entirely inside the AI.
+
+When there is enough evidence for a real judgment and the project contains difficulties the user is likely to underestimate—especially ones that could cause rework, higher cost, architectural change, or clear failure risk—warn the user directly in conversation.
+
+The opening line must be:
+
+```text
+⚠️ This is important. Please read this first.
+```
+
+This is not a report. It is one deliberate pause before the project rushes forward.
+
+Rules:
+
+- Show only 2–4 real project-specific difficulties. Do not invent extra items to reach a quota.
+- Default to one sentence per difficulty: what is hard and why it deserves attention now.
+- Use plain language, not jargon or a complete technical analysis.
+- The tone may be slightly sharp or humorous through contrast, a familiar analogy, or light teasing, but use at most one such line and never force a joke.
+- Sound like an experienced person giving a candid warning, not customer support and not a formal risk report.
+- Keep the whole reminder roughly 60–160 English words by default; even complex projects should normally stay under 220 words.
+- Do not use tables, full scoring, long risk taxonomies, canned jokes, or recurring mascot-style metaphors.
+- Apart from the fixed warning symbol, do not manufacture humor by stacking emoji.
+
+Tone example:
+
+```text
+AI writes code fast, but it does not know whether you are asking it to move quickly in the wrong direction.
+```
+
+This example shows tone only and must not be copied every time.
+
+### Trigger timing
+
+- Trigger by default after `PROJECT_BRIEF` has enough evidence and before drafting `PROJECT_PLAN`.
+- Warn earlier when an obvious blocking risk is already visible.
+- Do not force the reminder for a simple project with no meaningful hidden difficulty.
+
+### Multi-turn deduplication
+
+- During one project bootstrap, show the full reminder once by default.
+- Do not repeat the same difficulties after confirmations, local edits, or ordinary follow-up questions.
+- Warn again only when new evidence materially changes complexity, architecture, a high-risk boundary, cost, or MVP scope.
+- On a repeated warning, show only what is new or changed instead of copying the old reminder.
+- If the user explicitly asks what is difficult about the project, answer again, but still use shortest-sufficient output.
+- Without new evidence, do not reopen the full reminder.
+
+### Relationship to formal Markdown
+
+- This reminder belongs to the conversation display layer. Do not create a fourth file or a dedicated formal Markdown section for it.
+- If a difficulty itself changes future AI action, persist it through the existing formal-file admission rules. Do not store a duplicate merely because the reminder exists.
+- If `PROJECT_BRIEF` or `PROJECT_PLAN` already contains the underlying fact, summarize it in plain language instead of copying Markdown paragraphs.
+- The reminder does not create an extra confirmation point and must not pause the flow unless a truly blocking question exists.
 
 ---
 
@@ -331,7 +386,9 @@ Stage 2: Project planning
 ↓
 Run complexity judgment internally
 ↓
-Explain the conclusion briefly in conversation
+If the important difficulty reminder triggers, show it once in plain language
+↓
+Otherwise give only the shortest complexity explanation
 ↓
 Generate PROJECT_PLAN draft
 ↓
@@ -551,7 +608,7 @@ If one unknown could materially change routing, ask only the single most importa
 
 If it does not affect the current mode judgment, do not interrupt progress; mark it pending or unverified.
 
-The router still runs, but detailed diagnostics stay in conversation by default and do not enter `PROJECT_PLAN.md`.
+The router still runs, but detailed diagnostics stay internal by default, are not proactively displayed, and do not enter `PROJECT_PLAN.md`. Expand them in conversation only when the user explicitly asks for audit detail.
 
 Flow:
 
@@ -661,27 +718,35 @@ Core rule:
 
 ## 6.5 How to present the complexity judgment
 
-In conversation, use the shortest sufficient format:
+First decide whether section 1.14, the user-visible important difficulty reminder, triggers.
+
+### When the reminder triggers
+
+Use:
 
 ```text
-[PROJECT COMPLEXITY JUDGMENT]
-
-Recommended mode: Solo / Lean / Team
-
-Main reasons:
-- ...
-- ...
-- ...
-
-Necessary roles:
-- ...
-
-Critical unknown that needs confirmation:
-None / ...
-
-Conclusion:
-...
+⚠️ This is important. Please read this first.
 ```
+
+Then explain only 2–4 real difficulties in plain language. Do not also output a full complexity report about the same points.
+
+If the execution mode still needs explanation, add only one short sentence such as:
+
+```text
+So I recommend Lean mode; a full Team setup would be unnecessary here.
+```
+
+### When the reminder does not trigger
+
+Give the shortest sufficient explanation, for example:
+
+```text
+Recommended mode: Solo / Lean / Team
+Reason: 2–3 key reasons.
+Critical unknown needing confirmation: None / ...
+```
+
+Do not output a fixed formal report merely to look professional.
 
 Keep these out of `PROJECT_PLAN.md` by default:
 
