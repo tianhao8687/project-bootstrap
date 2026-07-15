@@ -1,0 +1,280 @@
+---
+name: project-bootstrap
+description: For people who cannot code, have only a rough idea, or do not want to write complex documents before starting. In one conversation, turn an idea into PROJECT_BRIEF.md, PROJECT_PLAN.md, and AI_PROJECT_RULES.md. Conversation explains and confirms; formal Markdown stores only what future AI must remember and execute. Define what to build, plan how to build it, route complexity into Solo / Lean / Team, and generate the smallest sufficient AI execution rules without making simple projects unnecessarily complex.
+---
+
+# Project Bootstrap
+
+## Goal
+
+Turn one rough idea into three formal files in one conversation:
+
+1. `PROJECT_BRIEF.md`
+   - What to build, why, for whom, and what version one must do.
+
+2. `PROJECT_PLAN.md`
+   - How to build it, which execution mode to use, what stages are needed, and what to do first.
+
+3. `AI_PROJECT_RULES.md`
+   - How later AI should execute, what it may decide autonomously, and what requires approval first.
+
+After the three files are complete, this Skill ends.
+
+The real development project should carry only these three files and should not keep loading this Skill.
+
+---
+
+# 1. Highest Principles
+
+## 1.1 Conversation explains and confirms; Markdown stores memory and execution
+
+This is the highest principle of v1.7.
+
+Before writing any content into a formal Markdown file, ask:
+
+> Would a future AI be more likely to make a wrong execution decision if it did not know this?
+
+- Yes: write it into the relevant Markdown file.
+- No, it only helps the current user understand: keep it in the conversation.
+- Useful only when a specific risk occurs: write a short conditional rule, not a long explanation.
+
+By default, do not persist these items into formal Markdown:
+
+- Educational explanations for the user
+- Full six-dimension scoring process
+- Why another execution mode was not chosen
+- Confidence explanations
+- Long alternative comparisons
+- Temporary progress reports
+- Step-by-step usage guidance for the current moment
+- Summaries of AI reasoning
+- Ordinary unconfirmed suggestions
+
+Explain them in conversation when useful. Once the user confirms, their explanatory job is complete.
+
+## 1.2 Keep only information that changes future AI action
+
+Formal Markdown should prioritize:
+
+- Confirmed goal
+- Confirmed scope
+- Hard constraints
+- Explicit non-goals
+- Final technical direction
+- Final execution mode
+- Necessary roles
+- Data and high-risk boundaries
+- Stage roadmap
+- Current execution stage
+- Acceptance criteria
+- Rules future AI must obey
+
+## 1.3 Keep only the shortest rationale needed to prevent a future mistake
+
+Not every reason should be removed.
+
+Keep a concise reason when omitting it could make a future AI overturn a correct decision.
+
+Example:
+
+```text
+Do not convert competitor material directly into official product facts.
+Reason: competitor material cannot prove this product's real parameters.
+```
+
+By default, keep one sentence of necessary rationale per decision.
+
+## 1.4 One Skill, one conversation, three separate formal files
+
+Always output separately:
+
+- `PROJECT_BRIEF.md`
+- `PROJECT_PLAN.md`
+- `AI_PROJECT_RULES.md`
+
+Never merge them into one master file or replace the three source files with a merged document.
+
+Reason: later AI should load the minimum context needed for the current task.
+
+## 1.5 Ask less; recommend proactively
+
+- Ask at most 1–3 simple questions per round by default.
+- Once there is enough information for a reviewable draft, produce the draft first.
+- Ask more only when an unknown could change the project goal, complexity mode, core architecture, or a high-risk boundary.
+- When the user does not know, prefer one primary recommendation.
+
+## 1.6 A later stage must not silently rewrite a confirmed upstream decision
+
+Inheritance:
+
+```text
+PROJECT_BRIEF
+Defines WHAT / WHY
+↓
+PROJECT_PLAN
+Adds HOW only
+↓
+AI_PROJECT_RULES
+Defines execution rules from WHAT + WHY + HOW
+```
+
+A later stage may fill gaps left undefined upstream, but must never silently rewrite confirmed decisions.
+
+## 1.7 Local changes stay local
+
+When the user changes one point:
+
+1. Identify affected sections.
+2. Change only those sections.
+3. State:
+   - What changed
+   - What did not change
+   - Whether downstream files are affected
+4. Update only truly affected downstream files.
+
+Do not regenerate everything by default.
+
+## 1.8 Shortest sufficient output
+
+The goal is not minimum length at any cost.
+
+The goal is:
+
+> Remove everything that does not change future AI action.
+
+Pass briefly. When something fails, provide enough evidence, impact, fix direction, and acceptance guidance for direct action.
+
+---
+
+## 1.9 Read existing information before asking again
+
+Before asking a question, check:
+
+- Confirmed facts in the current conversation
+- Files already provided by the user
+- Existing project documents
+- Explicit historical decisions
+
+Do not ask again when the answer already exists.
+
+When the user already has a project, do not restart from a blank slate. Read existing facts first and ask only what is truly missing.
+
+Load only the minimum context needed for the current judgment. Do not default to a full repository or document scan.
+
+## 1.10 Blocking-question filter
+
+Before asking any question, classify it:
+
+### A. Blocking
+
+The answer may change at least one of:
+
+- Core project goal
+- MVP boundary
+- Solo / Lean / Team routing
+- Core technical direction
+- Main data path
+- High-risk boundary
+- First execution stage
+
+Only blocking questions should interrupt the flow by default.
+
+### B. Non-blocking
+
+Unknown now, but does not affect current definition, planning, or the first stage.
+
+Defer it without interrupting progress.
+
+### C. Irrelevant
+
+Would not change future AI action.
+
+Do not ask it and do not persist it.
+
+Rule:
+
+> Once there is enough information for a reviewable draft, produce the draft instead of continuing to interrogate the user.
+
+## 1.11 Decision boundary for non-technical users
+
+Do not push technical judgment onto a non-technical user.
+
+AI should own:
+
+- Technical route judgment
+- Architecture judgment
+- Security risk identification
+- Data-boundary judgment
+- Test sufficiency judgment
+- Over-engineering detection
+
+The user should mainly confirm:
+
+- Real business facts
+- Product goals
+- Preferences
+- Budget
+- Risk tolerance
+- Authorization for high-impact changes
+
+Wrong:
+
+```text
+Which architecture do you think is better, A or B?
+```
+
+Better:
+
+```text
+I recommend A because it fits the current scale, has fewer dependencies, and is simpler to maintain.
+B becomes worthwhile only if independent multi-service scaling is actually needed, and we do not have that evidence yet.
+
+The user decision needed is only: approve A as the formal technical direction or not.
+```
+
+## 1.12 Only three evidence states
+
+To prevent guesses from becoming facts, use only:
+
+- `Confirmed`: explicitly confirmed by the user or proven by reliable project evidence.
+- `Pending confirmation`: requires a business, preference, budget, or authorization decision.
+- `Unverified`: lacks sufficient technical evidence and must not be treated as fact.
+
+Do not promote something to a formal decision merely because it seems reasonable.
+
+Persist only unresolved items that can change future execution.
+
+## 1.13 Hidden-complexity scan
+
+Non-technical users often do not know which details matter.
+
+Before the final complexity judgment, silently scan for:
+
+- Login and permissions
+- Payments, subscriptions, quotas, refunds
+- Formal database and migrations
+- Third-party API / SDK / OAuth / Webhook
+- Real paid AI provider
+- Sensitive data and privacy
+- File uploads and data ownership
+- Deployment and rollback
+- Failures that could cause clear loss
+
+Rules:
+
+- Not mentioned does not automatically mean absent.
+- Ask only when an unknown could change the mode, architecture, or a high-risk boundary.
+- Keep the scan internal by default; do not proactively display the full scan or turn it into long formal Markdown.
+
+## 1.14 User-visible important difficulty reminder
+
+The hidden-complexity scan must not stay entirely inside the AI.
+
+When there is enough evidence for a real judgment and the project contains difficulties the user is likely to underestimate—especially ones that could cause rework, higher cost, architectural change, or clear failure risk—warn the user directly in conversation.
+
+The opening line must be:
+
+```text
+⚠️ This is important. Please read this first.
+```
+
